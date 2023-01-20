@@ -34,8 +34,7 @@ bodyOverlay.addEventListener('click', () => {
 
 function loadPhoto() {
   fileUpload.addEventListener('change', () => {
-    file = fileUpload.files[0];
-    uploadedPhoto.src = URL.createObjectURL(file);
+    uploadedPhoto.src = URL.createObjectURL(fileUpload.files[0]);
 
     stepOne.classList.add('hidden');
     stepTwo.classList.remove('hidden');
@@ -53,38 +52,6 @@ publishButton.addEventListener('click', () => {
   formData.append('image', fileUpload.files[0]);
   formData.append('tags', hashtags.value)
 
-  fetch('https://c-gallery.polinashneider.space/api/v1/posts/', {
-    method: 'POST',
-    body: formData,
-    headers: {
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc2MzIxNTU0LCJpYXQiOjE2NzE0ODMxNTQsImp0aSI6ImZiNTlmMGE0YTgyMDRkMjNiMGQ3YWE0MTA5YmIzZDY2IiwidXNlcl9pZCI6MzB9.4mRe6i_DxZLZtpdJfNsn7oR7HeMQYkXf2ucU9mDIRNE'
-    },
-  })
-
-
-  //показ уведомлений
-  function showSuccessMessage() {
-    const successMessage = document.querySelector('#alert-success');
-    const clon = successMessage.content.firstElementChild.cloneNode(true);
-    document.body.appendChild(clon);
-
-    setTimeout(() => {
-      clon.remove();
-    }, 2000);
-
-  };
-
-  function showErrorMessage() {
-    const errorMessage = document.querySelector('#alert-fail');
-    const clon = errorMessage.content.firstElementChild.cloneNode(true);
-    document.body.appendChild(clon);
-
-    setTimeout(() => {
-      clon.remove();
-    }, 2000);
-
-  };
-
   const POST_URL = 'https://c-gallery.polinashneider.space/api/v1/posts/';
   const TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc2MzIxNTU0LCJpYXQiOjE2NzE0ODMxNTQsImp0aSI6ImZiNTlmMGE0YTgyMDRkMjNiMGQ3YWE0MTA5YmIzZDY2IiwidXNlcl9pZCI6MzB9.4mRe6i_DxZLZtpdJfNsn7oR7HeMQYkXf2ucU9mDIRNE';
 
@@ -96,7 +63,6 @@ publishButton.addEventListener('click', () => {
       Authorization: TOKEN
     },
   })
-
     .then((result) => {
       if (result.status === 201) {
         successMessage.textContent = 'Успешно!'
@@ -116,9 +82,32 @@ publishButton.addEventListener('click', () => {
       hashtags.value = '';
       postText.value = '';
       uploadedPhoto.src = '';
-      textarea.value = '';
     })
 })
+
+
+//показ уведомлений
+function showSuccessMessage() {
+  const successMessage = document.querySelector('#alert-success');
+  const clon = successMessage.content.firstElementChild.cloneNode(true);
+  document.body.appendChild(clon);
+
+  setTimeout(() => {
+    clon.remove();
+  }, 2000);
+
+};
+
+function showErrorMessage() {
+  const errorMessage = document.querySelector('#alert-fail');
+  const clon = errorMessage.content.firstElementChild.cloneNode(true);
+  document.body.appendChild(clon);
+
+  setTimeout(() => {
+    clon.remove();
+  }, 2000);
+
+};
 
 function hideOverlay() {
   body.classList.remove('with-overlay');
@@ -131,40 +120,39 @@ function closeModal(postModal) {
 
 
 //week2
-const POST_URL = 'https://c-gallery.polinashneider.space/api/v1/posts/';
-const TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc2MzIxNTU0LCJpYXQiOjE2NzE0ODMxNTQsImp0aSI6ImZiNTlmMGE0YTgyMDRkMjNiMGQ3YWE0MTA5YmIzZDY2IiwidXNlcl9pZCI6MzB9.4mRe6i_DxZLZtpdJfNsn7oR7HeMQYkXf2ucU9mDIRNE';
 const photoCount = document.querySelector('#photo-count');
 const emptyContent = document.querySelector('.empty-content');
 const photoContent = document.querySelector('.photos__content');
 const postTemplate = document.querySelector('#post-template');
 const previewPostModal = document.querySelector('.preview-post-modal');
+const POST_URL2 = 'https://c-gallery.polinashneider.space/api/v1/posts/';
+const TOKEN2 = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjc2MzIxNTU0LCJpYXQiOjE2NzE0ODMxNTQsImp0aSI6ImZiNTlmMGE0YTgyMDRkMjNiMGQ3YWE0MTA5YmIzZDY2IiwidXNlcl9pZCI6MzB9.4mRe6i_DxZLZtpdJfNsn7oR7HeMQYkXf2ucU9mDIRNE';
 
-fetch(POST_URL, {
+
+fetch(POST_URL2, {
   method: 'GET',
   headers: {
-    Authorization: TOKEN
+    Authorization: TOKEN2
   },
 })
 
-.then((result) => {
-  if (result.status === 200) {
-    return result.json();
-  }
-})
-  .then((obj) => {
-    photoCount.textContent = `${obj.length}`;
+  .then((result) => {
+    if (result.status === 200) {
+      return result.json();
+    }
   })
 
-  .then((data) => {
-    if (data) {
+  .then((obj) => {
+    if (obj) {
       photoCount.append(data.length);
-      data.forEach((content) => {
+      obj.forEach((content) => {
         const elementHTML = createElement(content.image, content.text, content.tags, content.created_at);
         photoContent.append(elementHTML);
       })
     } else {
       emptyContent.classList.remove('hidden');
     }
+    return obj;
   })
 
 const createElement = (photoURL, textURL, hashtagsURL, created_at) => {
@@ -221,13 +209,13 @@ const commentsContent = document.querySelector('.comments__content');
 const commentTemplate = document.querySelector('#comment-template');
 
 async function deletePost() {
-  const POST_DELETE = POST_URL + `${postId}`;
+  const POST_DELETE = POST_URL2 + `${postId}`;
 
   try {
     fetch(POST_DELETE, {
       method: 'DELETE',
       headers: {
-        Authorization: TOKEN
+        Authorization: TOKEN2
       },
     });
 
@@ -247,12 +235,12 @@ async function deletePost() {
 
 //likes
 async function sendLike() {
-  const LIKE = POST_URL + `${postId}/like/`;
+  const LIKE = POST_URL2 + `${postId}/like/`;
   try {
     fetch(LIKE, {
       method: 'POST',
       headers: {
-        Authorization: TOKEN
+        Authorization: TOKEN2
       },
     });
 
@@ -288,7 +276,7 @@ async function sendComment() {
     return;
   }
 
-  const COMMENT = POST_URL + 'comments/';
+  const COMMENT = POST_URL2 + 'comments/';
   const data = JSON.stringify({
     'text': postComment.value,
     'post': postId
@@ -299,7 +287,7 @@ async function sendComment() {
       method: "POST",
       body: data,
       headers: {
-        Authorization: TOKEN,
+        Authorization: TOKEN2,
         'Content-Type': 'application/json',
       },
     });
@@ -316,6 +304,9 @@ async function sendComment() {
     clearInput();
   }
 };
+function clearInput() {
+  commentInput.value = '';
+}
 
 function showCommentsNum() {
   postCommentsCounter.querySelector('span').textContent = commentsNum;
